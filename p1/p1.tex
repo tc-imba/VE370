@@ -19,6 +19,63 @@
 \begin{document}
 \maketitle
 
+\section{Introduction}
+Develop a MIPS assembly program that operates on a data segment consisting of an array of 32-bit unsigned integers. In the text (program) segment of memory, write a procedure called main that implements the main() function and other subroutines described below. Assemble, simulate, and carefully comment the file. Screen print your simulation results and explain the results by annotating the screen prints. You should compose an array whose size is determined by you in the main function and is not less than 20 elements. 
+
+\begin{minted}{c}
+main() {
+    int size = ...;  //determine the size of the array here
+    int PassCnt, FailCnt;							
+    int testArray[size] = { 55, 83,   
+        ... //compose your own array here
+    };				
+    PassCnt = countArray(testArray, size, 1);						
+    FailCnt = countArray(testArray, size, -1);						
+}		
+								
+int countArray(int A[], int numElements, int cntType) {					
+/**********************************************************************
+* Count specific elements in the integer array A[] whose size is     *
+* numElements and return the following:                              *
+*                                                                    *
+* When cntType = 1, count the elements greater than or equal to 60;  *
+* When cntType = -1, count the elements less than 60;                *
+**********************************************************************/
+    int i, cnt = 0;									
+    for(i = numElements - 1; i > -1; i--) {						
+	    switch (cntType) {								
+            case '1' : cnt += Pass(A[i]); break;			
+            otherwise: cnt += Fail(A[i]); 			
+	    }								
+    }							
+    return cnt;							
+}							
+							
+int Pass(int x) {							
+    if(x >= 60) return 1;						
+    else return 0;						
+}							
+							
+int Fail(int x) {							
+    if (x < 60) return 1;						
+    else return 0;						
+}
+\end{minted}
+
+\section{Simulation result}
+I use the data [55, 83, 21, 20, 40, 49, 42, 35, 92, 8, 65, 88, 25, 100, 43, 9, 98, 10, 81, 63, 83, 27, 42, 81, 94, 2, 40, 49, 75, 46, 67, 46, 89, 27, 39, 12, 19, 41, 86, 3, 14, 64, 22, 64, 8, 38, 32, 26, 64, 5], there are 50 in total, 18 pass, 22 fail. \\
+
+The simulation result is shown in Figure \ref{fig-console}.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.5\linewidth]{console.png}
+\caption{Simulation result}
+\label{fig-console}
+\end{figure}
+
+\section{Appendix}
+\inputminted{asm}{p1.s}
 
 
 
