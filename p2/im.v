@@ -6,15 +6,18 @@ module im (
     output      [31:0]  instruction
 );
 
-    parameter filename = "test.txt"; // should be in hex form
-    parameter size = 1024;
+    parameter size = 64;
+    integer i;
 
     reg [31:0] memory [0:size-1];
+
     initial begin
-        $readmemh(filename, memory, 0, size - 1);
+        for (i = 0; i < size; ++i)
+            memory[i] = 32'b0;
+        `include "test.txt"
     end
 
-    assign instruction = memory[address];
+    assign instruction = memory[address >> 2];
 
 endmodule // im
 
