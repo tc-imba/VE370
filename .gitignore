@@ -303,3 +303,5 @@ CTestTestfile.cmake
 cmake-build-*
 *.tar
 *.tar.gz
+*.~lock*
+.directory
