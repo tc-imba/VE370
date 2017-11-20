@@ -20,16 +20,16 @@ module single_cycle (input clk);
 
     wire                branch;
 
-    wire                regdst,
+    wire                regDst,
                         jump,
-                        brancheq,
-                        branchne,
-                        memread,
-                        memtoreg,
-                        memwrite,
-                        alusrc,
-                        regwrite;
-    wire        [1:0]   aluop;
+                        branchEq,
+                        branchNe,
+                        memRead,
+                        memtoReg,
+                        memWrite,
+                        aluSrc,
+                        regWrite;
+    wire        [1:0]   aluOp;
 
     wire        [4:0]   regWriteReg;
     wire        [31:0]  regWriteData,
@@ -47,14 +47,14 @@ module single_cycle (input clk);
 
     assign pcAdd4 = pcOut + 4;
     assign addResult = pcAdd4 + (signExtendOut << 2);
-    assign branch = (brancheq & aluMainZero) | (branchne & ~aluMainZero);
+    assign branch = (branchEq & aluMainZero) | (branchNe & ~aluMainZero);
     assign branchResult = (branch == 1'b0) ? pcAdd4 : addResult;
     assign jumpAddress = {pcAdd4[31:28], instruction[25:0], 2'b0};
     assign pcIn = (jump == 1'b0) ? branchResult : jumpAddress;
 
-    assign regWriteReg = (regdst == 1'b0) ? instruction[20:16] : instruction[15:11];
-    assign regWriteData = (memtoreg == 1'b0) ? aluMainResult : dmReadData;
-    assign aluMainIn = (alusrc == 1'b0) ? regReadData2 : signExtendOut;
+    assign regWriteReg = (regDst == 1'b0) ? instruction[20:16] : instruction[15:11];
+    assign regWriteData = (memtoReg == 1'b0) ? aluMainResult : dmReadData;
+    assign aluMainIn = (aluSrc == 1'b0) ? regReadData2 : signExtendOut;
 
     PC pc(
         .clk(clk),
@@ -68,17 +68,17 @@ module single_cycle (input clk);
     );
 
     Control control(
-        .opcode(instruction[31:26]),
-        .regdst(regdst),
+        .opCode(instruction[31:26]),
+        .regDst(regDst),
         .jump(jump),
-        .brancheq(brancheq),
-        .branchne(branchne),
-        .memread(memread),
-        .memtoreg(memtoreg),
-        .memwrite(memwrite),
-        .alusrc(alusrc),
-        .regwrite(regwrite),
-        .aluop(aluop)
+        .branchEq(branchEq),
+        .branchNe(branchNe),
+        .memRead(memRead),
+        .memtoReg(memtoReg),
+        .memWrite(memWrite),
+        .aluSrc(aluSrc),
+        .regWrite(regWrite),
+        .aluOp(aluOp)
     );
 
     SignExtend signExtend(
@@ -88,7 +88,7 @@ module single_cycle (input clk);
 
     ALUControl aluControl(
         .funct(instruction[5:0]),
-        .op(aluop),
+        .op(aluOp),
         .control(aluMainControl)
     );
 
@@ -100,7 +100,7 @@ module single_cycle (input clk);
         .readData2(regReadData2),
         .writeReg(regWriteReg),
         .writeData(regWriteData),
-        .regWrite(regwrite)
+        .regWrite(regWrite)
     );
 
     ALU aluMain(
@@ -116,8 +116,8 @@ module single_cycle (input clk);
         .address(aluMainResult),
         .writeData(regReadData2),
         .readData(dmReadData),
-        .memWrite(memwrite),
-        .memRead(memread)
+        .memWrite(memWrite),
+        .memRead(memRead)
     );
 
 endmodule // single_cycle
