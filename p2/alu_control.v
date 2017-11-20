@@ -1,7 +1,7 @@
 `ifndef MODULE_ALU_CONTROL
 `define MODULE_ALU_CONTROL
 
-module alu_control (
+module ALUControl (
     input       [5:0]   funct,
     input       [1:0]   op,
     output reg  [3:0]   control
@@ -33,6 +33,6 @@ module alu_control (
         endcase
     end
 
-endmodule // alu_control
+endmodule // ALUControl
 
 `endif // MODULE_ALU_CONTROL

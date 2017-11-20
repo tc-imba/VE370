@@ -1,7 +1,7 @@
 `ifndef MODULE_ALU
 `define MODULE_ALU
 
-module alu (
+module ALU (
     input       [3:0]   control,
     input       [31:0]  a, b,
     output              zero,
@@ -10,7 +10,7 @@ module alu (
 
     assign zero = (result == 0);
 
-    always @ ( control ) begin
+    always @ ( control, a, b ) begin
         case (control)
             4'b0000: // AND
                 result = a & b;
@@ -28,6 +28,6 @@ module alu (
         endcase
     end
 
-endmodule // alu
+endmodule // ALU
 
 `endif // MODULE_ALU

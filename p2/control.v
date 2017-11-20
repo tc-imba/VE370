@@ -1,7 +1,7 @@
 `ifndef MODULE_CONTROL
 `define MODULE_CONTROL
 
-module control (
+module Control (
     input       [5:0]   opcode,
     output reg          regdst,
                         jump,

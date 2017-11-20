@@ -1,10 +1,10 @@
 `ifndef MODULE_REGISTERS
 `define MODULE_REGISTERS
 
-module registers (
+module Registers (
     input               clk, regWrite,
     input       [4:0]   readReg1, readReg2,
-    output reg  [31:0]  writeReg,
+    input       [4:0]   writeReg,
     output      [31:0]  readData1, readData2,
     input       [31:0]  writeData
 );
@@ -13,7 +13,7 @@ module registers (
     integer i;
 
     initial begin
-        for (i = 0; i < 32; ++i)
+        for (i = 0; i < 32; i = i + 1)
             regs[i] = 32'b0;
     end
 
@@ -22,7 +22,7 @@ module registers (
 
     always @ (posedge clk) begin
         if (regWrite == 1)
-            writeReg <= writeData;
+            regs[writeReg] <= writeData;
     end
 
 endmodule // registers

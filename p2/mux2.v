@@ -1,7 +1,7 @@
 `ifndef MODULE_MUX2
 `define MODULE_MUX2
 
-module mux (in0, in1, sel, out);
+module Mux2 (in0, in1, sel, out);
 
     parameter   size = 32;
     input                   sel;
@@ -10,6 +10,6 @@ module mux (in0, in1, sel, out);
 
     assign out = (sel == 1'b0) ? in0 : in1;
 
-endmodule // mux
+endmodule // Mux2
 
 `endif // MODULE_MUX2
