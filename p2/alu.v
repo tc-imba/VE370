@@ -10,6 +10,10 @@ module ALU (
 
     assign zero = (result == 0);
 
+    initial begin
+        result = 32'b0;
+    end
+
     always @ ( control, a, b ) begin
         case (control)
             4'b0000: // AND

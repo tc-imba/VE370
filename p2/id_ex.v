@@ -4,14 +4,13 @@
 module ID_EX (
     input               clk,
                         flush,
-                        stall,
 
-    input       [31:0]  pcAdd4ID,
-                        regReadData1ID,
+    input       [31:0]  regReadData1ID,
                         regReadData2ID,
                         signExtendID,
-    input       [4:0]   instructionRtID,
-                        instructionRdID,
+    input       [4:0]   registerRsID,
+                        registerRtID,
+                        registerRdID,
     input       [1:0]   aluOpID,
     input               regDstID,
                         memReadID,
@@ -20,12 +19,12 @@ module ID_EX (
                         aluSrcID,
                         regWriteID,
 
-    output reg  [31:0]  pcAdd4EX,
-                        regReadData1EX,
+    output reg  [31:0]  regReadData1EX,
                         regReadData2EX,
                         signExtendEX,
-    output reg  [4:0]   instructionRtEX,
-                        instructionRdEX,
+    output reg  [4:0]   registerRsEX,
+                        registerRtEX,
+                        registerRdEX,
     output reg  [1:0]   aluOpEX,
     output reg          regDstEX,
                         memReadEX,
@@ -36,12 +35,12 @@ module ID_EX (
 );
 
     initial begin
-        pcAdd4EX        = 32'b0;
-        regReadData1EX     = 32'b0;
-        regReadData2EX     = 32'b0;
+        regReadData1EX  = 32'b0;
+        regReadData2EX  = 32'b0;
         signExtendEX    = 32'b0;
-        instructionRtEX = 5'b0;
-        instructionRdEX = 5'b0;
+        registerRsEX    = 5'b0;
+        registerRtEX    = 5'b0;
+        registerRdEX    = 5'b0;
         aluOpEX         = 2'b0;
         regDstEX        = 1'b0;
         memReadEX       = 1'b0;
@@ -53,12 +52,6 @@ module ID_EX (
 
     always @ (posedge clk) begin
         if (flush) begin
-            pcAdd4EX        <= 32'b0;
-            regReadData1EX  <= 32'b0;
-            regReadData2EX  <= 32'b0;
-            signExtendEX    <= 32'b0;
-            instructionRtEX <= 5'b0;
-            instructionRdEX <= 5'b0;
             aluOpEX         <= 2'b0;
             regDstEX        <= 1'b0;
             memReadEX       <= 1'b0;
@@ -66,13 +59,13 @@ module ID_EX (
             memWriteEX      <= 1'b0;
             aluSrcEX        <= 1'b0;
             regWriteEX      <= 1'b0;
-        end else if (!stall) begin
-            pcAdd4EX        <= pcAdd4ID;
-            regReadData1EX  <= regReadData1EX;
-            regReadData2EX  <= regReadData2EX;
+        end else begin
+            regReadData1EX  <= regReadData1ID;
+            regReadData2EX  <= regReadData2ID;
             signExtendEX    <= signExtendID;
-            instructionRtEX <= instructionRtID;
-            instructionRdEX <= instructionRdID;
+            registerRsEX    <= registerRsID;
+            registerRtEX    <= registerRtID;
+            registerRdEX    <= registerRdID;
             aluOpEX         <= aluOpID;
             regDstEX        <= regDstID;
             memReadEX       <= memReadID;

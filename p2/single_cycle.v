@@ -1,3 +1,6 @@
+`ifndef MODULE_SINGLE_CYCLE
+`define MODULE_SINGLE_CYCLE
+
 `include "alu.v"
 `include "alu_control.v"
 `include "control.v"
@@ -19,6 +22,7 @@ module single_cycle (input clk);
                         addResult;
 
     wire                branch;
+    wire                stall;
 
     wire                regDst,
                         jump,
@@ -44,7 +48,7 @@ module single_cycle (input clk);
 
     wire        [31:0]  dmReadData;
 
-
+    assign stall = 1'b0;
     assign pcAdd4 = pcOut + 4;
     assign addResult = pcAdd4 + (signExtendOut << 2);
     assign branch = (branchEq & aluMainZero) | (branchNe & ~aluMainZero);
@@ -58,6 +62,7 @@ module single_cycle (input clk);
 
     PC pc(
         .clk(clk),
+        .stall(stall),
         .in(pcIn),
         .out(pcOut)
     );
@@ -121,3 +126,5 @@ module single_cycle (input clk);
     );
 
 endmodule // single_cycle
+
+`endif // MODULE_SINGLE_CYCLE

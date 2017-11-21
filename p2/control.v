@@ -51,7 +51,7 @@ module Control (
                 memtoReg    <= 1'b0;
                 memWrite    <= 1'b0;
                 aluSrc      <= 1'b0;
-                regWrite    <= 1'b1;
+                regWrite    <= 1'b0;
                 aluOp       <= 2'b10;
 			end
             6'b000100: begin // beq

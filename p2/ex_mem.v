@@ -3,21 +3,18 @@
 
 module EX_MEM (
     input               clk,
-                        flush,
 
-    input       [31:0]  pcAddResultEX,
-                        aluResultEX,
+    input       [31:0]  aluResultEX,
                         regReadData2EX,
-    input       [4:0]   instructionEX,
+    input       [4:0]   registerEX,
     input               memReadEX,
                         memtoRegEX,
                         memWriteEX,
                         regWriteEX,
 
-    output reg  [31:0]  pcAddResultMEM,
-                        aluResultMEM,
+    output reg  [31:0]  aluResultMEM,
                         regReadData2MEM,
-    output reg  [4:0]   instructionMEM,
+    output reg  [4:0]   registerMEM,
     output reg          memReadMEM,
                         memtoRegMEM,
                         memWriteMEM,
@@ -25,10 +22,9 @@ module EX_MEM (
 );
 
     initial begin
-        pcAddResultMEM  = 32'b0;
         aluResultMEM    = 32'b0;
         regReadData2MEM = 32'b0;
-        instructionMEM  = 5'b0;
+        registerMEM     = 5'b0;
         memReadMEM      = 1'b0;
         memtoRegMEM     = 1'b0;
         memWriteMEM     = 1'b0;
@@ -36,25 +32,13 @@ module EX_MEM (
     end
 
     always @ (posedge clk) begin
-        if (flush) begin
-            pcAddResultMEM  <= 32'b0;
-            aluResultMEM    <= 32'b0;
-            regReadData2MEM <= 32'b0;
-            instructionMEM  <= 5'b0;
-            memReadMEM      <= 1'b0;
-            memtoRegMEM     <= 1'b0;
-            memWriteMEM     <= 1'b0;
-            regWriteMEM     <= 1'b0;
-        end else begin
-            pcAddResultMEM  <= pcAddResultEX;
-            aluResultMEM    <= aluResultEX;
-            regReadData2MEM <= regReadData2EX;
-            instructionMEM  <= instructionEX;
-            memReadMEM      <= memReadEX;
-            memtoRegMEM     <= memtoRegEX;
-            memWriteMEM     <= memWriteEX;
-            regWriteMEM     <= regWriteEX;
-        end
+        aluResultMEM    <= aluResultEX;
+        regReadData2MEM <= regReadData2EX;
+        registerMEM     <= registerEX;
+        memReadMEM      <= memReadEX;
+        memtoRegMEM     <= memtoRegEX;
+        memWriteMEM     <= memWriteEX;
+        regWriteMEM     <= regWriteEX;
     end
 
 endmodule // EX_MEM

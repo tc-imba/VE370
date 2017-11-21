@@ -3,6 +3,7 @@
 
 module PC (
     input               clk,
+                        stall,
     input       [31:0]  in,
     output reg  [31:0]  out
 );
@@ -12,7 +13,8 @@ module PC (
     end
 
     always @ (posedge clk) begin
-        out <= in;
+        if (!stall)
+            out <= in;
     end
 
 endmodule // PC
