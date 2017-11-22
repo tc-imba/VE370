@@ -1,5 +1,6 @@
 `ifndef MODULE_FORWARD
 `define MODULE_FORWARD
+`timescale 1ns / 1ps
 
 module Forward (
     input       [4:0]   registerRsID,

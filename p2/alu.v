@@ -1,5 +1,6 @@
 `ifndef MODULE_ALU
 `define MODULE_ALU
+`timescale 1ns / 1ps
 
 module ALU (
     input       [3:0]   control,

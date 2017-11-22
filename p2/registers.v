@@ -1,11 +1,12 @@
 `ifndef MODULE_REGISTERS
 `define MODULE_REGISTERS
+`timescale 1ns / 1ps
 
 module Registers (
     input               clk, regWrite,
-    input       [4:0]   readReg1, readReg2,
+    input       [4:0]   readReg1, readReg2, readRegExtra,
     input       [4:0]   writeReg,
-    output      [31:0]  readData1, readData2,
+    output      [31:0]  readData1, readData2, readDataExtra,
     input       [31:0]  writeData
 );
 
@@ -20,7 +21,7 @@ module Registers (
     assign readData1 = regs[readReg1];
     assign readData2 = regs[readReg2];
 
-    always @ (posedge clk) begin
+    always @ (negedge clk) begin
         if (regWrite == 1)
             regs[writeReg] <= writeData;
     end

@@ -1,5 +1,6 @@
 `ifndef MODULE_SIGN_EXTEND
 `define MODULE_SIGN_EXTEND
+`timescale 1ns / 1ps
 
 module SignExtend (
     input           [15:0]  in,

@@ -1,5 +1,6 @@
 `ifndef MODULE_ALU_CONTROL
 `define MODULE_ALU_CONTROL
+`timescale 1ns / 1ps
 
 module ALUControl (
     input       [5:0]   funct,

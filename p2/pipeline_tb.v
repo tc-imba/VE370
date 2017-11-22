@@ -31,7 +31,7 @@ module pipeline_tb;
     integer i = 0;
 
 	// Instantiate the Unit Under Test (UUT)
-	pipeline uut (
+	Pipeline uut (
 		.clk(clk)
 	);
 

@@ -18,7 +18,12 @@
 `include "forward.v"
 `include "hazard_detection.v"
 
-module pipeline (input clk);
+module Pipeline (
+    input               clk,
+    input       [4:0]   regIn,
+    output      [31:0]  pcOut,
+                        regOut
+);
 
     wire                flushIFID,
                         flushIDEX,
@@ -142,12 +147,14 @@ module pipeline (input clk);
         .readData2(regReadData2ID),
         .writeReg(registerWB),
         .writeData(regWriteDataWB),
-        .regWrite(regWriteWB)
+        .regWrite(regWriteWB),
+        .readRegExtra(regIn),
+        .readDataExtra(regOut)
     );
     SignExtend signExtend(.in(instructionID[15:0]), .out(signExtendID));
     assign pcAddResultID = pcAdd4ID + (signExtendID << 2);
-    assign regReadData1NewID = (forwardC) ? registerMEM : regReadData1ID;
-    assign regReadData2NewID = (forwardD) ? registerMEM : regReadData2ID;
+    assign regReadData1NewID = (forwardC) ? aluResultMEM : regReadData1ID;
+    assign regReadData2NewID = (forwardD) ? aluResultMEM : regReadData2ID;
     assign regReadDataEqID = (regReadData1NewID == regReadData2NewID);
     assign branchID = (branchEqID && regReadDataEqID) || (branchNeID && !regReadDataEqID);
     assign branchResultIF = (!branchID) ? pcAdd4IF : pcAddResultID;
@@ -259,6 +266,10 @@ module pipeline (input clk);
         .stall(stall),
         .flush(flushIDEX)
     );
+
+    // Output
+    assign pcOut = pcOutIF;
+
 
 endmodule // pipeline
 

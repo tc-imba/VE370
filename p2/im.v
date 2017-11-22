@@ -1,5 +1,6 @@
 `ifndef MODULE_IM
 `define MODULE_IM
+`timescale 1ns / 1ps
 
 module InstructionMemory (
     input       [31:0]  address,

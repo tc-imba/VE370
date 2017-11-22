@@ -1,5 +1,6 @@
 `ifndef MODULE_PC
 `define MODULE_PC
+`timescale 1ns / 1ps
 
 module PC (
     input               clk,

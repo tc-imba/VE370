@@ -1,5 +1,6 @@
 `ifndef MODULE_EX_MEM
 `define MODULE_EX_MEM
+`timescale 1ns / 1ps
 
 module EX_MEM (
     input               clk,

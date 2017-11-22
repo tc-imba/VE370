@@ -1,5 +1,6 @@
 `ifndef MODULE_MEM_WB
 `define MODULE_MEM_WB
+`timescale 1ns / 1ps
 
 module MEM_WB (
     input               clk,

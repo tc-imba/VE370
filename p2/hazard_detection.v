@@ -1,5 +1,6 @@
 `ifndef MODULE_HAZARD_DETECTION
 `define MODULE_HAZARD_DETECTION
+`timescale 1ns / 1ps
 
 module HazardDetection (
     input               branchEqID,

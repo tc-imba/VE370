@@ -1,5 +1,6 @@
 `ifndef MODULE_MUX2
 `define MODULE_MUX2
+`timescale 1ns / 1ps
 
 module Mux2 (in0, in1, sel, out);
 

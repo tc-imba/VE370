@@ -1,5 +1,6 @@
 `ifndef MODULE_IF_ID
 `define MODULE_IF_ID
+`timescale 1ns / 1ps
 
 module IF_ID (
     input               clk,

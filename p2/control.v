@@ -1,5 +1,6 @@
 `ifndef MODULE_CONTROL
 `define MODULE_CONTROL
+`timescale 1ns / 1ps
 
 module Control (
     input       [5:0]   opCode,

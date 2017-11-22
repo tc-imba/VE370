@@ -1,5 +1,6 @@
 `ifndef MODULE_SINGLE_CYCLE
 `define MODULE_SINGLE_CYCLE
+`timescale 1ns / 1ps
 
 `include "alu.v"
 `include "alu_control.v"

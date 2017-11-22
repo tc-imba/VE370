@@ -1,5 +1,6 @@
 `ifndef MODULE_DM
 `define MODULE_DM
+`timescale 1ns / 1ps
 
 module DataMemory (
     input               clk,
