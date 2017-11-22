@@ -20,6 +20,7 @@ module Registers (
 
     assign readData1 = regs[readReg1];
     assign readData2 = regs[readReg2];
+    assign readDataExtra = regs[readRegExtra];
 
     always @ (negedge clk) begin
         if (regWrite == 1)

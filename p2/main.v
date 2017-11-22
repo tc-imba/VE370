@@ -9,7 +9,7 @@ module main (
     input               clk50M,
                         clk,
                         pc,
-    input       [3:0]   register,
+    input       [4:0]   register,
     output      [6:0]   C,
     output      [3:0]   AN
 );
@@ -20,7 +20,8 @@ module main (
     wire        [15:0]  display;
 
     assign display = (pc) ? pcOut : regOut;
-    assign regIn = (register < 8) ? register + 16 : register;
+    assign regIn = (register < 8) ? register + 16 :
+        ((register < 16) ? register : register + 8);
 
     Pipeline pipeline(
         .clk(clk),

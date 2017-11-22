@@ -7,6 +7,7 @@ NET "register<0>" LOC = "G18";
 NET "register<1>" LOC = "H18";
 NET "register<2>" LOC = "K18";
 NET "register<3>" LOC = "K17";
+NET "register<4>" LOC = "L14";
 NET "C<0>"        LOC = "L18";
 NET "C<1>"        LOC = "F18";
 NET "C<2>"        LOC = "D17";
