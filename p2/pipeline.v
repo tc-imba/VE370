@@ -22,8 +22,7 @@ module pipeline (input clk);
 
     wire                flushIFID,
                         flushIDEX,
-                        stall,
-                        stall2;
+                        stall;
 
     // IF stage
     wire        [31:0]  pcInIF,
@@ -38,6 +37,8 @@ module pipeline (input clk);
                         instructionID,
                         regReadData1ID,
                         regReadData2ID,
+                        regReadData1NewID,
+                        regReadData2NewID,
                         signExtendID,
                         jumpAddressID;
     wire        [4:0]   registerRsID,
@@ -98,10 +99,12 @@ module pipeline (input clk);
     // Data Hazard
     wire        [1:0]   forwardA,
                         forwardB;
+    wire                forwardC,
+                        forwardD;
 
     // IF stage
     PC pc(
-        .clk(clk), .stall(stall2),
+        .clk(clk), .stall(stall),
         .in(pcInIF), .out(pcOutIF)
     );
     InstructionMemory im(.address(pcOutIF), .instruction(instructionIF));
@@ -109,7 +112,7 @@ module pipeline (input clk);
 
     // IF/ID
     IF_ID ifid (
-        .clk(clk), .stall(stall2), .flush(flushIFID),
+        .clk(clk), .stall(stall), .flush(flushIFID),
         .pcAdd4IF(pcAdd4IF), .pcAdd4ID(pcAdd4ID),
         .instructionIF(instructionIF), .instructionID(instructionID)
     );
@@ -143,16 +146,14 @@ module pipeline (input clk);
     );
     SignExtend signExtend(.in(instructionID[15:0]), .out(signExtendID));
     assign pcAddResultID = pcAdd4ID + (signExtendID << 2);
-    assign regReadDataEqID = (regReadData1ID == regReadData2ID);
+    assign regReadData1NewID = (forwardC) ? registerMEM : regReadData1ID;
+    assign regReadData2NewID = (forwardD) ? registerMEM : regReadData2ID;
+    assign regReadDataEqID = (regReadData1NewID == regReadData2NewID);
     assign branchID = (branchEqID && regReadDataEqID) || (branchNeID && !regReadDataEqID);
     assign branchResultIF = (!branchID) ? pcAdd4IF : pcAddResultID;
     assign jumpAddressID = {pcAdd4ID[31:28], instructionID[25:0], 2'b0};
     assign pcInIF = (!jumpID) ? branchResultIF : jumpAddressID;
     assign flushIFID = branchID;
-    assign stall2 = ((branchEqID || branchNeID)
-        && (registerMEM == registerRsID || registerMEM == registerRtID
-        || registerEX == registerRsID || registerEX == registerRtID )
-        || stall);
 
     // ID/EX
     ID_EX idex (
@@ -230,6 +231,8 @@ module pipeline (input clk);
 
     // Data Hazard
     Forward forward (
+        .registerRsID(registerRsID),
+        .registerRtID(registerRtID),
         .registerRsEX(registerRsEX),
         .registerRtEX(registerRtEX),
         .registerRdMEM(registerMEM),
@@ -237,14 +240,22 @@ module pipeline (input clk);
         .regWriteMEM(regWriteMEM),
         .regWriteWB(regWriteWB),
         .forwardA(forwardA),
-        .forwardB(forwardB)
+        .forwardB(forwardB),
+        .forwardC(forwardC),
+        .forwardD(forwardD)
     );
 
     HazardDetection hazardDetection (
+        .branchEqID(branchEqID),
+        .branchNeID(branchNeID),
         .memReadEX(memReadEX),
+        .regWriteEX(regWriteEX),
+        .memReadMEM(memReadMEM),
         .registerRsID(registerRsID),
         .registerRtID(registerRtID),
         .registerRtEX(registerRtEX),
+        .registerRdEX(registerEX),
+        .registerRdMEM(registerMEM),
         .stall(stall),
         .flush(flushIDEX)
     );

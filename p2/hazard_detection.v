@@ -2,7 +2,11 @@
 `define MODULE_HAZARD_DETECTION
 
 module HazardDetection (
-    input               memReadEX,
+    input               branchEqID,
+                        branchNeID,
+                        memReadEX,
+                        regWriteEX,
+                        memReadMEM,
     input       [4:0]   registerRsID,
                         registerRtID,
                         registerRtEX,
@@ -18,10 +22,20 @@ module HazardDetection (
     end
 
     always @ ( * ) begin
-        if (memReadEX && (registerRtEX == registerRsID || registerRtEX == registerRtID)) begin
+        if (memReadEX && registerRtEX && (registerRtEX == registerRsID || registerRtEX == registerRtID)) begin
             stall = 1'b1;
             flush = 1'b1;
-        end else if () begin
+        end else if (branchEqID || branchNeID) begin
+            if (regWriteEX && registerRdEX && (registerRdEX == registerRsID || registerRdEX == registerRtID)) begin
+                stall = 1'b1;
+                flush = 1'b1;
+            end else if (memReadMEM && registerRdMEM && (registerRdMEM == registerRsID || registerRdMEM == registerRtID)) begin
+                stall = 1'b1;
+                flush = 1'b1;
+            end else begin
+                stall = 1'b0;
+                flush = 1'b0;
+            end
         end else begin
             stall = 1'b0;
             flush = 1'b0;

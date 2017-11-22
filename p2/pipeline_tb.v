@@ -40,7 +40,7 @@ module pipeline_tb;
 		clk = 0;
 	end
 
-    always #20 begin
+    always #10 begin
         //$display("Time: %d, CLK = %d, PC = 0x%H", i, clk, uut.pcOutIF);
         //$display("[$s0] = 0x%H, [$s1] = 0x%H, [$s2] = 0x%H", uut.registers.regs[16], uut.registers.regs[17], uut.registers.regs[18]);
         //$display("[$s3] = 0x%H, [$s4] = 0x%H, [$s5] = 0x%H", uut.registers.regs[19], uut.registers.regs[20], uut.registers.regs[21]);
