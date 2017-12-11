@@ -15,7 +15,7 @@ module InstructionMemory (
     initial begin
         for (i = 0; i < size; i = i + 1)
             memory[i] = 32'b0;
-        `include "test.txt"
+        `include "memory.txt"
     end
 
     assign instruction = memory[address >> 2];
