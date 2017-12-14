@@ -1,0 +1,117 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{ulem}
+\usepackage[left=1in,right=1in,top=1in,bottom=1in, headheight=15pt]{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{cite}
+\usepackage{bm}
+\usepackage{float}
+\usepackage{CJK}
+\usepackage{indentfirst}
+\usepackage{amssymb}
+\usepackage[titletoc]{appendix}
+\usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage{dsfont}
+\usepackage{listings} 
+\usepackage{mathrsfs}
+\usepackage{subfigure}
+\usepackage{fancyhdr}  
+\pagestyle{fancy} 
+
+\begin{document}
+
+\begin{titlepage}
+
+
+\title{\vspace{5cm}\vspace{1cm}\textbf{Machine Learning \\ Comparison of Supervised Learning and Reinforcement Learning }\vspace{0.8cm}}
+\author{ Liu Yihao \\
+Wu Guangzheng\\
+Jiang Yicheng}
+\date{\today}
+\maketitle
+\vspace{1cm}
+\begin{center}
+\begin{Large}
+\textbf{Abstract}
+\end{Large}\\
+
+\end{center}
+
+Machine learning is the core of Artificial Intelligence. It enables a machine to learn from and make predictions on given data. The concept was first introduced by Arthur Samuel in 1959 and it has been developing about 50 years. Main approaches of Machine learning includes Supervised Learning, Unsupervised Learning, and  Reinforcement Learning. In this article, we will mainly focused on superviced learning and reinforcement learning. We will use the example of AlphaGo to do some comparison of these two approaches. 
+
+\vspace{3mm}
+\textbf{Key Words: }Machine Learning, Artificial Intelligence, Supervised Learning, Reinforcement Learning, AlphaGo
+\thispagestyle{empty}
+\end{titlepage}
+\setcounter{page}{1}
+
+
+\newpage
+
+\section{Introduction}
+Artificial intelligence (AI) is intelligence displayed by machines, in contrast with the natural intelligence displayed by humans and other animals. AI techniques have become an essential part of the technology industry, helping to solve many challenging problems in computer science. And machine learning plays the most important role in the process of a machine's finding the best solution to a certain problem. The main approaches of machine learning includes supervised learning, unsupervised learning, and  reinforcement learning. We will use the example of AlphaGo and focus on supervised learning and reinforcement learning to see which approach has a better prospects for development.
+
+\section{Background}
+\subsection{Supervised Learning}
+Supervised learning is an approach to build a function to match the input data and output result by learning a lot of given training data. 
+
+Give a simple example. When we are born, we did not have any concept of this world. We did not know what a bird is, what an air plane is or what a rocket is. And our parents or teacher or some other more experienced people told us and helped us build some concept of these objects. As time passing by, when we had been given enough samples, we would be able to distinguish them by ourselves. We gain this ability by learning from the experience of other people. And such a learning approach is called supervised learning.
+
+The main process of supervised learning consists of: 
+\begin{enumerate}
+\item Determine the type of training examples. (How to distinguish different kinds of object that can fly) 
+\item Gather a training set. (Given names and some corresponding examples for some kinds of objects)
+\item Determine the input feature representation of the learned function. (How we are shown the names and corresponding examples)
+\item Determine the structure of the learned function and corresponding learning algorithm. (We need a map between a given concrete objects to some abstract names)
+\item Evaluate the accuracy of the learned function. (Whether our map is correct or not)
+\end{enumerate}   
+
+\subsection{Reinforcement Learning}
+Whether we can learn how to distinguish obejcts that can fly if no one give us any examples? Of course we can. No one taught the first man who gave name ``bird" to a bird. So this leads to another way of machine learning --- reinforcement learning. We do not know the map from objects to their names and we even do not know the names. What we know is that we need to distinguish these objects according to their own feature and we want to minimize the overlapping. In formal words, reinforcement learning is a process for a machine to find what actions it ought to take in an environment so as to maximize some notion of cumulative reward.
+
+The main process of reinforcement learning consists of:
+\begin{enumerate}
+\item Given a model of the environment without an analytic solution (We need to distinguish objects but we do not know the classification)
+\item Given a simulation model of the environment (We are given those objects that we need to distinguish)
+\item Collect information about how the environment interacts with it. (Whether the classification we find is perfect enough)
+\end{enumerate}
+
+\section{Case of AlphaGo}
+In October 2015, AlphaGo became the first computer Go program to beat a human professional Go player without handicaps on a full-sized $19\times19$ board.\cite{alphago} In March 2016, it beat Lee Sedol in a five-game match, giving a final score of 4 games to 1, the first time a computer Go program has beaten a 9-dan professional without handicaps.\cite{match1} At the 2017 Future of Go Summit, AlphaGo beat Ke Jie, the world No.1 ranked player at the time, in a three-game match. This AlphaGo learned from all match in human's history and it can always choose the best position to put its go.
+
+While such a great machine was beat by AlphaGo Zero (another machine trained by reinforcement learning), giving a final score of 0 to 100. AlphaGo Zero is trained by self-play reinforcement learning, starting from random play, without any supervision or use of human data. And it is able to beat the previous AlphaGo after three days self-learning.
+
+\section{Discussion}
+Learning from this case and the literature\cite{case}, we know that ``AlphaGo Zero outperformed AlphaGo Lee after just 36 h. In comparison, AlphaGo Lee was trained over several months." `` AlphaGo Zero used a single machine with 4 tensor processing units (TPUs), whereas AlphaGo Lee was distributed over many machines and used 48 TPUs." So we can see that the machine trained with reinforcement learning works much better than that with supervised learning. And we think that this is because reinforcement learning is more creative. 
+
+Learning from experience is a good way to do improvement. And humans have been familiar with such kind of learning modes for a quite long time. In our life, we can gain new knowledge from teacher or any more experienced people. Also, we can learn from books written by previous humans. We keep following this way since we can share our experience with others and we can find a better way to solve some problems. 
+
+But a machine is different from humans. We are not only able to gain knowledge and experience, but also find some new methods. A machine trained in such way cannot make any innovation. Only what is can do is summarize the experience and find the best way to solve some problems using those ways that already exist. But this may not be the best way in the world. And sometimes human's experience may be wrong and mislead a machine.
+
+While for a machine trained with reinforcement learning, no human's experience can help it. It can only gain knowledge and summarize experience by itself. Due to its strong computing ability, it can improve itself very soon. Just take AlphaGo Zero for an example, ``Humankind has accumulated Go knowledge from millions of games played over thousands of years, collectively distilled into patterns, proverbs and books. In the space of a few days, starting tabula rasa, AlphaGo Zero was able to rediscover much of this Go knowledge, as well as novel strategies that provide new insights into the oldest of games."\cite{case} Some experience from human may not be effective for a machine to gain useful experience. These data will not only waste machine's time, but also influence the analysis result of it. In a word, human's experience sometimes can help a machine, but it will influence its efficiency and give it a limitation on final results. So it is not surprising that AlphaGo Zero can beat previous AlphaGo easily after a short time self-learning.
+
+
+
+
+\section{Conclusion}
+We humans have experienced the same cases, starting from zero, trying by ourselves and summarizing experience to make better choices. However, we humans are not always strong enough to be able to start from zero and reach further achievement. We have to learn from previous people and stand on the shoulders of giants to go further. And since we can think by ourselves, we can make creation with previous experience. While for a machine, it is strong enough to explore by itself start from zero. Without the experience from humans, it can also reach the same and even more achievement. Maybe for a machine, reinforcement learning is a more approriate way for itself to do explorement.
+\begin{thebibliography}{0}
+
+\bibitem{alphago}
+``Research Blog: AlphaGo: Mastering the ancient game of Go with Machine Learning". Google Research Blog. 27 January 2016.
+
+\bibitem{match1} 
+``Match 1 --– Google DeepMind Challenge Match: Lee Sedol vs AlphaGo". 8 March 2016.
+
+\bibitem{case}
+``Mastering the game of Go without human knowledge", David Silver, Julian Schrittwieser, Demis Hassabis. Nature 550, 354–359.18 October 2017.
+\end{thebibliography}
+
+
+\end{document}
