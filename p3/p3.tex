@@ -22,7 +22,29 @@
 \usepackage{mathrsfs}
 \usepackage{subfigure}
 \usepackage{fancyhdr}  
+\usepackage{url}
 \pagestyle{fancy} 
+
+
+\RequirePackage[linesnumbered,ruled,longend]{algorithm2e}
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\newcommand{\To}{\KwTo}
+\newcommand{\Ret}{\KwRet}
+\SetKwProg{Fn}{Function}{\string:}{end}
+\SetKw{and}{ and }
+\SetKw{oor}{ or }
+\SetAlTitleSty{}
+\SetTitleSty{textit}{}
+\newcommand{\cmt}[1]{\tcc*[f]{#1}}
+\newcommand{\NULL}{{\tt NULL}}
+\newcommand{\get}{\ensuremath{\gets}}
+
+\newenvironment{Algorithm}[1][]{\def\algoname{#1}\bigskip\begin{algorithm}}{\caption{\algoname}\end{algorithm}}
+
+\RequirePackage{ifthen}
+\newcommand{\pbtype}[1]{\ifthenelse{\equal{#1}{graph}}{\def\pbtypecol{green}}{\ifthenelse{\equal{#1}{math}}{\def\pbtypecol{orange}}{\ifthenelse{\equal{#1}{combinatory}}{\def\pbtypecol{blue}}{\ifthenelse{\equal{#1}{string}}{\def\pbtypecol{red}}{\ifthenelse{\equal{#1}{network}}{\def\pbtypecol{yellow}}{\ifthenelse{\equal{#1}{ai}}{\def\pbtypecol{cyan}}{\ifthenelse{\equal{#1}{image}}{\def\pbtypecol{magenta}}{\def\pbtypecol{gray}}}}}}}}}
+\newenvironment{problem}[1]{\smallskip {\bf Problem.} #1\par}{\par}
 
 \begin{document}
 
@@ -82,6 +104,207 @@ The main process of reinforcement learning consists of:
 \item Collect information about how the environment interacts with it. (Whether the classification we find is perfect enough)
 \end{enumerate}
 
+\textbf{Backgrounds:}\cite{case4}
+
+
+\textbf{1. Markov Decision Process:}
+
+Every problem in the world is based on some world view. Artificial Intelligence is also based on some world views - the Classical Physics. Some assumptions are made that we do not consider the effect of the Quatum Mechanics and the Theory of Relativity. Then the Markov Decision Process is raised to specify the world view of Artificial Intelligence.
+
+According to the Markov Decision Process(MDP), we cut the world into small pieces, and put them in a set, like $\lbrace s_0, a_0, r_0, s_1, a_1, r_1, \cdots, s_t, a_t, r_t\rbrace$, where $s$ represents the "state", which describes what our agent is currently, and $a$ represents the action and $r$ represents the reward. In a state $s$, if you give an action $a$, you will be sure to go to some other state $s^{'}$, not randomly, and receive some certain reward.
+
+MDP here also made an assumption that the future can only be determined by the instant, and we do not need to care about the past. This is similar to the Wise-Person assumption made hundreds of years ago that if there is a person who knows exactly everything in the universe, he will know what these things will be like in the next second. In the MDP, it is similar. We also suppose that every state is fully observed, and we get the following equation.
+
+\begin{align*}
+\textbf{P}(S_{t+1} \mid S_t) = \textbf{P}(S_{t+1} \mid S_t, S_{t-1}, \cdots S_0)
+\end{align*}
+
+Note that not only the MDP world view for an agent is that future can only be determined by instant, but also the world should be fully observed. If not, some things out of the observation may cause some effects on the observed world and make it not Markov.
+
+~\\
+
+\textbf{2. Result:}
+
+The result of the MDP is then be defined. Since reward is representing the reward for some single time step, result is representing a sequence of reward, with the following equation.
+
+\begin{align*}
+G_t = R_{t+1} + \lambda R_{t+2} + \cdots = \sum_{t = 0}^{\infty} \lambda^k R_{t+k+1}
+\end{align*}
+
+Where the $\lambda$ is called discount factor, mainly in the range of $[0,1]$. It is similar to our experience in daily life. For example, we'd like to enjoy the love as Romeo and Juliet's, but we should pay more attention on the bread for tomorrow's breakfast. If we take a larger discount factor, we are looking more for the future, while if we take a smaller discount, we are looking for the current situation. In addition, if we take the discount factor as zero, it is just the greedy algorithm.
+
+Then we have the value function, which is representing the expectation of the results.
+
+\begin{align*}
+v(s) = \mathbb{E}[G_t \mid S_t = s]
+\end{align*}
+
+With the definition of value function, we have two ways to improve the current policy then
+
+\begin{enumerate}
+\item Improve $\pi(a\mid s)$ or $a = \pi(s)$ directly to have a higher reward.
+\item Getting the improved policy by the estimated value function.
+\end{enumerate}
+
+Frankly speaking, the value function is just formulating how human beings make decisions.
+
+\textbf{3. Bellman Function and Action-Value Function:}
+
+Since we get the value function, we'd like to deal with it. Another way to construct a value function is using the recursive, which we call the recursive function Bellman function.
+
+\begin{align*}
+v(s) = \mathbb{E}[G_t \mid S_t = s] = \mathbb{E}[R_{t+1} + \lambda G_{t+1} \mid S_t = s] = \mathbb{E}[R_{t+1} + \lambda v(S_{t+1}) \mid S_t = s]
+\end{align*}
+
+From the function, we can conclude that the value of current state is determined by the current reward and the value of next state. But however, there's still some disadvantage of the value function. Bellman function cares nothing other than the states, but agents prefer knowing the value function of some actions instead of the states. Based on these requirements, the action-value function is then introduced as
+
+\begin{align*}
+Q^{\pi}(s,a) = \mathbb{E}[r +\lambda Q^{\pi}(s^{'}, a^{'}) \mid s,a]
+\end{align*}
+
+And it is easy to see that our task is to fing the optimal value function:
+
+\begin{align*}
+Q^{*}(s,a) = max_{\pi}Q^{\pi}(s,a)
+\end{align*}
+
+And with the equation mentioned above, we have
+
+\begin{align*}
+Q^{*}(s,a) = \mathbb{E}_{s^{'}}[r +\lambda max_{a^{'}}Q^{*}(s^{'}, a^{'}) \mid s,a]
+\end{align*}
+
+
+~\\
+
+\textbf{Policy Iteration:}
+
+The idea of policy iteration is to deal with the value function recursively to let the policy converge to the optimal. We define the policy iteration equation with the Bellman function:
+
+\begin{align*}
+v_{k+1}(s) = \mathbb{E}[R_{t+1} + \lambda v(S_{t+1}) \mid S_t = s] = \sum_{a} \pi(a\mid s) \sum_{s^{'},r} p(s^{'},r \mid s,a)[r + \lambda v_{k} (s^{'})]
+\end{align*}
+
+So there are two steps in value iteration:
+
+\begin{enumerate}
+\item Policy Evaluation: Estimate $v_{\pi}$.
+\item Policy improvement: Generate $\pi^{'} \leq \pi$.
+\end{enumerate}
+
+The following figure shows how these steps work.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm]{problem96ab.png}
+\end{figure}
+
+And we have the following algorithms.
+
+% add comment in the pseudocode: \cmt{comment}
+% define a function name: \SetKwFunction{shortname}{Name of the function}
+% use the defined function: \shortname{$variables$}
+% use the keyword ``function'': \Fn{function name}, e.g. \Fn{\shortname{$var$}}
+\begin{Algorithm}[Policy Iteration - Initialization][H]
+	% - replace nb with problem number (e.g. problem101)
+% -	must match the reference in the overview
+% - when writing more than one algo use problem101a, problem101b, problem101c etc.	
+	\Input{A sequence of states $S$ and an initial policy $\pi$}
+	\Output{Initialization}
+%	\Fn{\myfunction{$a,b$}}{
+%	}
+\Fn{Initialization{($S$, $\pi$)}}{
+	$V(s) \in \mathbb{R}$ and $\pi(s) = \mathcal{A}(s)$ arbitrarily for all $s \in S$.\\
+	\emph{PolicyEvaluation}($S$, $\pi$)
+}	
+
+\end{Algorithm}
+
+\begin{Algorithm}[Policy Iteration - Policy Evaluation][H]
+	% - replace nb with problem number (e.g. problem101)
+% -	must match the reference in the overview
+% - when writing more than one algo use problem101a, problem101b, problem101c etc.	
+	\Input{Initialized Policy Iteration}
+	\Output{Estimated $v_\pi$}
+
+\Fn{PolicyEvaluation{($S$, $\pi$)}}{
+	\While{$\Delta \leq \theta$}{
+		$\Delta \leftarrow 0$\\
+		\For{\textbf{each} $s \in S$}{
+			$v \leftarrow V(s)$\\
+			$V(s) \leftarrow \sum_{s^{'},r} p(s^{'},r \mid s,\pi(s))[r + \lambda V (s^{'})]$\\
+			$\Delta \leftarrow max(\Delta, |v - V(s)|)$
+		}
+	}
+	\emph{PolicyImprovement}($S$, $\pi$)
+}
+
+\end{Algorithm}
+
+\begin{Algorithm}[Policy Iteration - Policy Improvement][H]
+	% - replace nb with problem number (e.g. problem101)
+% -	must match the reference in the overview
+% - when writing more than one algo use problem101a, problem101b, problem101c etc.	
+	\Input{Estimated Policy}
+	\Output{The Optimal Policy}
+
+\Fn{PolicyImprovement($S$, $\pi$)}{
+	$policy-stable \leftarrow True$\\
+	\For{\textbf{each} $s \in S$}{
+		$a \leftarrow \pi(s)$\\
+		$\pi(s) \leftarrow argmax_{a}\sum_{s^{'},r} p(s^{'},r \mid s,\pi(s))[r + \lambda V (s^{'})]$\\
+		\If{$a \neq \pi(s)$}{
+			$policy-stable = False$
+		}
+	}
+	\If{$policy-stable$}{
+		\Ret $V$ and  $\pi$
+	}
+	\Else{
+		\emph{PolicyEvaluation}($S$, $\pi$)
+	}
+}
+
+\end{Algorithm}
+
+However, the policy iteration is based on the model given before the initialization, so it cannot be applied directly. You can use it only based on some models. So we make some improvement on it.
+
+
+~\\
+
+\textbf{Value Iteration:}
+
+Value Iteration is more direct, which focus directly on the Bellman Optimal function. So we have the following equation.
+
+\begin{align*}
+&v_{*}(s) = max_{a} \sum_{s^{'},r} p(s^{'},r \mid s,a)[r + \lambda v_{*}(s^{'})]\\
+&v_{k+1}(s) = max_{a} \sum_{s^{'},r} p(s^{'},r \mid s,a)[r + \lambda v_{k}(s^{'})]
+\end{align*}
+
+And we have the value iteration algorithm shown as follow.
+
+\begin{Algorithm}[Value Iteration][H]
+	% - replace nb with problem number (e.g. problem101)
+% -	must match the reference in the overview
+% - when writing more than one algo use problem101a, problem101b, problem101c etc.	
+	\Input{A sequence of states $S$ and an initial policy $\pi$}
+	\Output{The Optimal Policy}
+
+\Fn{ValueImprovement($S$, $\pi$)}{
+	Initialize array $V$ arbitrarily. (e.g. $V(s) = 0$ for all $s \in S^{+}$)\\
+	\While{$\Delta \geq \theta$}{
+		$v \leftarrow V(s)$\\
+		$V(s) \leftarrow max_{a} \sum_{s^{'},r} p(s^{'},r \mid s,a)[r + \lambda V(s^{'})]$\\
+		$\Delta \leftarrow max(\Delta, |v - V(s)|)$
+	}	
+	Output a deterministic policy, $\pi$, such that $\pi(s) = argmax_{a} \sum_{s^{'},r} p(s^{'},r \mid s,a)[r + \lambda V(s^{'})]$
+}
+
+\end{Algorithm}
+
+The difference of value iteration and policy iteration is that for the policy iteration, it estimates to renew the value and use the value to find the policy. But value iteration doesn't find some improved policy, but continue updating the value until it converges, and just find the optimal policy by the converged value. The same problem they share is that they rely heavily on the model and can be applied in some limited areas. So some improvements are shown below.
+~\\
+
 \section{Case of AlphaGo}
 In October 2015, AlphaGo became the first computer Go program to beat a human professional Go player without handicaps on a full-sized $19\times19$ board.\cite{alphago} In March 2016, it beat Lee Sedol in a five-game match, giving a final score of 4 games to 1, the first time a computer Go program has beaten a 9-dan professional without handicaps.\cite{match1} At the 2017 Future of Go Summit, AlphaGo beat Ke Jie, the world No.1 ranked player at the time, in a three-game match. This AlphaGo learned from all match in human's history and it can always choose the best position to put its go.
 
@@ -111,6 +334,15 @@ We humans have experienced the same cases, starting from zero, trying by ourselv
 
 \bibitem{case}
 ``Mastering the game of Go without human knowledge", David Silver, Julian Schrittwieser, Demis Hassabis. Nature 550, 354–359.18 October 2017.
+
+\bibitem{case2}
+Mnih, Volodymyr, et al. "Playing atari with deep reinforcement learning." arXiv preprint arXiv:1312.5602 (2013).
+
+\bibitem{case3}
+Mnih, Volodymyr, et al. "Human-level control through deep reinforcement learning." Nature 518.7540 (2015): 529-533.
+
+\bibitem{case4}
+David Silver's Lecture Slides and Lectures \url{http://www0.cs.ucl.ac.uk/staff/d.silver/web/Home.html}
 \end{thebibliography}
 
 
